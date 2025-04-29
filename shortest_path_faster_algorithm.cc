@@ -12,6 +12,11 @@ using namespace std;
  * This function calculates the shortest path from a starting node to all other nodes in a weighted directed graph using SPFA.
  * It also detects negative cycles in the graph.
  * 
+ * To find the longest path, you can negate all the weights in the graph.
+ * The shortest path found in this modified graph will correspond to the 
+ * longest path in the original graph.
+ * Then, you just have to negate the result to get the real path length.
+ *
  * @param start The starting node for calculating shortest paths.
  * @param n The total number of nodes in the graph.
  * @param adj The adjacency list representation of the graph, where adj[u] is a vector of pairs (v, weight) 
@@ -27,6 +32,19 @@ using namespace std;
  *       - Bellman-Ford is more stable in the worst case, but SPFA performs much better in practice on average.
  *       - Both algorithm can be used to find negative cycle
  *       Space Complexity: O(V), for storing distances, counts, and the queue.
+ * 
+ *       System of Difference Constraints (SDC):
+ *       - SPFA can be used to solve a System of Difference Constraints.
+ *       - An SDC is a set of inequalities of the form x_i - x_j <= c_ij, where x_i and x_j are variables and c_ij is a constant.
+ *       - To solve an SDC using SPFA:
+ *         1. Create a graph where each variable x_i corresponds to a node i in the graph.
+ *         2. For each constraint x_i - x_j <= c_ij, add a directed edge from node j to node i with weight c_ij (from i to j with weight -c_ij if x_i - x_j >= c_ij).
+ *         3. Add a virtual source node (node s) and add edges of weight 0 from s to all other nodes.
+ *         4. Run SPFA from the source node s.
+ *         5. If a negative cycle is detected, the system of constraints is inconsistent (no solution).
+ *         6. Otherwise, the shortest distance dist[i] from the source node to node i represents a solution for x_i.
+ *         7. If there is no path from the virtual source to node i, the solution for x_i can be any value.
+ *         8. Because of the way the edges are created, we have dist[i] - dist[j] <= w_ji
  */
 pair<bool, vector<int>> spfa(int start, int n, const vector<vector<pair<int, int>>>& adj) {
     // dist[i] stores the shortest distance from the starting node to node i. Initialized to infinity.
