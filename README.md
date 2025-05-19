@@ -1,2 +1,3 @@
-# shortest-path-faster-algorithm
-Shortest Path Faster Algorithm
+# Shortest Path Faster Algorithm
+
+https://www.geeksforgeeks.org/shortest-path-faster-algorithm/
